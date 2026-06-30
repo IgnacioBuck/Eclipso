@@ -1,0 +1,101 @@
+.categoria {
+  margin: 60px 0; /* Aumentamos el margen para separar más cada fila */
+  position: relative; /* Controla el contexto para los títulos */
+}
+
+/* Título de la categoría (Drama, Comedia, etc.) */
+.categoria h2 {
+  margin-left: 20px;
+  margin-bottom: 15px;
+  font-family: sans-serif;
+}
+
+.netflix-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 40px; /* Espacio en los costados para que los botones no tapen las imágenes */
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  width: 100%;
+  padding: 20px 0; /* Espacio extra arriba y abajo para que el zoom (scale) no se corte */
+  scroll-snap-type: x mandatory; /* Fuerza a que el scroll se detenga en puntos exactos */
+}
+
+.item {
+  min-width: calc(20% - 10px); /* Ajuste preciso para 5 elementos contando márgenes */
+  margin: 0 5px;
+  box-sizing: border-box;
+  /* Evita que el zoom afecte el tamaño real del contenedor del ítem */
+  overflow: visible; 
+  scroll-snap-align: start; /* Alinea el inicio de la imagen con el inicio del contenedor */
+}
+
+.item img {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Forzamos un tamaño horizontal de película (evita que se colapse si no carga la foto) */
+  background-color: #333; /* Color gris de fondo temporal por si no carga la imagen */
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+/* Efecto Zoom sin mover el entorno */
+.item:hover img {
+  transform: scale(1.15); /* Un zoom ligeramente menor para que sea elegante */
+  position: relative;
+  z-index: 5; /* Pasa por encima de las demás sin moverlas */
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.5); /* Sombra para darle profundidad */
+}
+
+/* Botones mejor posicionados */
+button.prev, button.next {
+  background-color: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 15px 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  height: calc(100% - 40px); /* El botón ocupa el alto de la fila de películas */
+  transition: background-color 0.2s;
+}
+
+button.prev:hover, button.next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+button.prev { left: 0; }
+button.next { right: 0; }
+
+/* Limita el tamaño de toda la sección de estrenos y la centra */
+.estrenos {
+    max-width: 1200px;        /* Controla el ancho máximo (puedes bajarlo a 800px si lo quieres más chico) */
+    margin: 30px auto;       /* Separa el carrusel del resto y lo centra en la pantalla */
+    border-radius: 10px;
+    overflow: hidden;        /* Redondea las esquinas del carrusel */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+/* Estandariza las imágenes del carrusel */
+.estrenos .carousel-item img {
+    height: 580px;           /* Altura fija para que ninguna portada deforme el diseño */
+    object-fit: cover;       /* Ajusta y recorta la foto automáticamente para que no se vea estirada */
+    object-position: center; /* Centra el recorte en caso de que la imagen sea muy grande */
+}
+
+/* Opcional: Da un fondo oscuro al texto flotante para que se lea mejor */
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 8px;
+    bottom: 30px;
+}

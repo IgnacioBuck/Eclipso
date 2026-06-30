@@ -1,0 +1,6 @@
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Se mantiene por encima de los zooms y botones de las películas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para cuando pase el contenido por debajo */
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/styleReproductor.css">
+</head>
+<body>
+        <header>
+        <a href="index.html">← Volver al Inicio</a>
+    </header>
+
+    <main class="player-container">
+        <h2 id="titulo-pelicula">Cargando película...</h2>
+
+        <div class="video-wrapper">
+        <iframe 
+            id="visor" 
+            src="" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+        </div>
+    </main>
+
+    <script>
+        const VIEW_KEY = "nnFJ2dTIgKadm_U15hWEPBnovP91r9win5lt1TQrB4Q";
+        
+        // Agregué el campo "titulo" para mapearlo en tu h2 automáticamente
+        const peliculasConfig = {
+        "elpadrino": { titulo: "elpadrino", tmdb: "238", viewKey: VIEW_KEY },
+        "tiemposviolentos": { titulo: "tiemposviolentos", tmdb: "680", viewKey: VIEW_KEY },
+        "elperfectoasesino": { titulo: "elperfectoasesino", tmdb: "101", viewKey: VIEW_KEY },
+        "titanic": { titulo: "titanic", tmdb: "597", viewKey: VIEW_KEY },
+        "elclubdelapelea": { titulo: "elclubdelapelea", tmdb: "550", viewKey: VIEW_KEY },
+        "elpianista": { titulo: "elpianista", tmdb: "423", viewKey: VIEW_KEY },
+        "caracortada": { titulo: "caracortada", tmdb: "111", viewKey: VIEW_KEY },
+        "taxidriver": { titulo: "taxidriver", tmdb: "103", viewKey: VIEW_KEY },
+        "elgranhotelbudapest": { titulo: "elgranhotelbudapest", tmdb: "120467", viewKey: VIEW_KEY },
+        "greenbook": { titulo: "greenbook", tmdb: "490123", viewKey: VIEW_KEY },
+        "scarymovie": { titulo: "scarymovie", tmdb: "1273221", viewKey: VIEW_KEY },
+        "toystorie": { titulo: "toystorie", tmdb: "1084244", viewKey: VIEW_KEY },
+        };
+
+        // 1. Obtener el ID desde la URL (?id=xxxx)
+        const params = new URLSearchParams(window.location.search);
+        const tmdbId = params.get("id");
+        
+        const visor = document.getElementById("visor");
+        const tituloHtml = document.getElementById("titulo-pelicula");
+
+        // 2. Buscar si el ID existe en nuestra configuración
+        const opciones = Object.values(peliculasConfig).find(m => m.tmdb === tmdbId);
+
+        if (opciones) {
+        // 3. Si existe, cambiamos el título y la URL del iframe
+        tituloHtml.textContent = opciones.titulo;
+        document.title = `Viendo: ${opciones.titulo}`; // Cambia la pestaña del navegador
+        
+        const url = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
+        visor.src = url;
+        } else {
+        // Si no existe, muestra el error
+        tituloHtml.textContent = "Película no encontrada";
+        document.body.innerHTML = `<header><a href="index.html">← Volver</a></header>
+                                    <h2 style="text-align:center; margin-top:100px;">Error: La película no está registrada en el sistema.</h2>`;
+        }
+    </script>
+</body>
+</html>
