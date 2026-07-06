@@ -1,0 +1,87 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* mejor que 90vh */
+    margin: 0;
+    background-color: #073b3a;
+    font-family: 'Saira';
+}
+
+h1 {
+    color: rgb(228, 217, 217);
+    margin-bottom: 20px;
+    font-size: 8vw; /* relativo al ancho de pantalla */
+    text-align: center;
+}
+
+.ingreso a {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 100%;
+    color: white;
+    background-color: #08a045;
+    text-decoration: none;
+}
+
+.main-container { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 20px; 
+    width: 100%;
+    padding: 20px;
+}
+
+.login-container {
+    background-color: rgb(238, 221, 221);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(19, 18, 18, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px; /* límite para pantallas grandes */
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.login-container label {
+    display: block;
+    margin: 20px 0 10px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.login-container button {
+    margin-top: 30px;
+    padding: 12px;
+    width: 100%;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.login-container button:hover {
+    background-color: #0056b3;
+}
+
+a {
+    padding: 3%;
+    border-radius: 8px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}

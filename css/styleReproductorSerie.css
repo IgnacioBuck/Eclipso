@@ -1,0 +1,159 @@
+/* VARIABLES DE DISEÑO (Cambia estos colores para adaptarlos idéntico a tus películas) */
+:root {
+    --bg-color: #073b3a;
+    --text-color: #ffffff;
+    --accent-color: #08a045;
+    --accent-hover: #08a045;
+    --card-bg: #242424;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #073b3a;
+    font-family: 'Saira';
+}
+
+
+.container {
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Enlace volver al inicio */
+.header-nav {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.header-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.header-nav a:hover {
+    color: var(--accent-color);
+}
+
+/* FORMATO DEL REPRODUCTOR (Misma escala fija de películas 16:9) */
+.player-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* Mantiene proporción cinema */
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+.player-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* PANEL DE CONTROLES (Temporadas y Capítulos) */
+.controls-container {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Sección Selector */
+.selector-wrapper {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.selector-wrapper label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #aaa;
+}
+
+.custom-select {
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.custom-select:focus {
+    border-color: var(--accent-color);
+}
+
+/* GRILLA DE CAPÍTULOS SIMÉTRICA */
+.chapters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.btn-cap {
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 10px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cap:hover {
+    background: #444;
+    border-color: #666;
+}
+
+/* Capítulo activo / visto */
+.btn-cap.visto {
+    background: var(--accent-color);
+    border-color: var(--accent-hover);
+    color: #000;
+    font-weight: bold;
+}
+
+/* BOTÓN SIGUIENTE CAPÍTULO (Aislado abajo a la derecha) */
+.next-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-next {
+    background: transparent;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-next:hover {
+    background: var(--accent-color);
+    color: #000;
+}

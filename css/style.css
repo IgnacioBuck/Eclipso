@@ -1,6 +1,61 @@
+/*0b6e4f*/
+/*073b3a*/
+/*f5fbef*/
+/*08a045*/
+
 header {
     position: sticky;
     top: 0;
     z-index: 1000; /* Se mantiene por encima de los zooms y botones de las películas */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para cuando pase el contenido por debajo */
+    margin-bottom: 80px;
 }
+body{
+
+    background-color: #073b3a;
+    font-family: 'Saira';
+    
+
+}
+h2{
+
+    color: #f5fbef;
+    
+}
+
+.navbar-custom {
+    background-color: #141414; /* el negro característico de Netflix */
+}
+
+.navbar-custom .nav-link {
+    color: #e5e5e5;
+    font-size: 25px;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #ffffff;
+}
+
+.navbar-custom .navbar-brand {
+    color: #08a045; /* rojo Netflix, si querés ese estilo */
+    font-weight: bold;
+    font-size: 25px;
+}
+
+section{
+
+    margin: 25px;
+
+}
+
+.drama{
+
+    margin-top: 80px;
+}
+
+button{
+
+    border-radius: 8px;
+
+}
+

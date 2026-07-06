@@ -1,47 +1,32 @@
 body {
-    background-color: #141414;
+    background-color: #000; /* Fondo completamente negro como Netflix */
     color: #fff;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    overflow: hidden; /* Evita barras de scroll molestas en el modo reproducción */
+    background-color: #073b3a;
+    font-family: 'Saira';
+    
 }
 
-header {
-    width: 100%;
-    padding: 20px 50px;
-    box-sizing: border-box;
-}
-
-header a {
-    color: #E50914; /* Rojo Netflix */
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
+/* ==========================================
+   CONTENEDOR FULLSCREEN (OCUPA TODA LA PANTALLA)
+   ========================================== */
 .player-container {
-    width: 90%;
-    max-width: 1000px;
-    margin-top: 20px;
-}
-
-h2 {
-    margin-bottom: 20px;
-    font-weight: 500;
+    position: fixed; /* Se fija a la pantalla sin importar el scroll */
+    top: 0;
+    left: 0;
+    width: 100vw;    /* 100% del ancho de la ventana */
+    height: 100vh;   /* 100% del alto de la ventana */
+    z-index: 9999;   /* Se asegura de estar por encima de todo el catálogo */
+    background-color: #000;
 }
 
 .video-wrapper {
     position: relative;
-    padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
-    height: 0;
-    overflow: hidden;
+    width: 100%;
+    height: 100%; /* Eliminamos el padding-bottom % para que use el alto total */
     background-color: #000;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .video-wrapper iframe {
@@ -50,4 +35,29 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
+    border: none;
+}
+
+/* ==========================================
+   BOTÓN VOLVER ATRÁS (FLECHA ESTILO NETFLIX)
+   ========================================== */
+.btn-back {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 10000; /* Por encima del iframe */
+    color: white;
+    text-decoration: none;
+    font-size: 2rem; /* Tamaño grande para la flecha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.btn-back:hover {
+    transform: scale(1.2); /* Pequeño efecto al pasar el mouse */
+    opacity: 1;
 }

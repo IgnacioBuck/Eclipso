@@ -1,47 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>reproductor-Pelicula</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styleReproductor.css">
 </head>
 <body>
-        <header>
-        <a href="index.html">← Volver al Inicio</a>
-    </header>
 
     <main class="player-container">
-        <h2 id="titulo-pelicula">Cargando película...</h2>
+        <a href="../pages/menu.html" class="btn-back" id="btn-back">←</a>
 
         <div class="video-wrapper">
-        <iframe 
-            id="visor" 
-            src="" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
+            <iframe 
+                id="visor" 
+                src="" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
+            </iframe>
         </div>
     </main>
 
     <script>
         const VIEW_KEY = "nnFJ2dTIgKadm_U15hWEPBnovP91r9win5lt1TQrB4Q";
         
-        // Agregué el campo "titulo" para mapearlo en tu h2 automáticamente
         const peliculasConfig = {
-        "elpadrino": { titulo: "elpadrino", tmdb: "238", viewKey: VIEW_KEY },
-        "tiemposviolentos": { titulo: "tiemposviolentos", tmdb: "680", viewKey: VIEW_KEY },
-        "elperfectoasesino": { titulo: "elperfectoasesino", tmdb: "101", viewKey: VIEW_KEY },
-        "titanic": { titulo: "titanic", tmdb: "597", viewKey: VIEW_KEY },
-        "elclubdelapelea": { titulo: "elclubdelapelea", tmdb: "550", viewKey: VIEW_KEY },
-        "elpianista": { titulo: "elpianista", tmdb: "423", viewKey: VIEW_KEY },
-        "caracortada": { titulo: "caracortada", tmdb: "111", viewKey: VIEW_KEY },
-        "taxidriver": { titulo: "taxidriver", tmdb: "103", viewKey: VIEW_KEY },
-        "elgranhotelbudapest": { titulo: "elgranhotelbudapest", tmdb: "120467", viewKey: VIEW_KEY },
-        "greenbook": { titulo: "greenbook", tmdb: "490123", viewKey: VIEW_KEY },
-        "scarymovie": { titulo: "scarymovie", tmdb: "1273221", viewKey: VIEW_KEY },
-        "toystorie": { titulo: "toystorie", tmdb: "1084244", viewKey: VIEW_KEY },
+            "contandoamisex": { titulo: "contandoamisex", tmdb: "63492", viewKey: VIEW_KEY },
+            "elpadrino": { titulo: "elpadrino", tmdb: "238", viewKey: VIEW_KEY },
+            "tiemposviolentos": { titulo: "tiemposviolentos", tmdb: "680", viewKey: VIEW_KEY },
+            "elperfectoasesino": { titulo: "elperfectoasesino", tmdb: "101", viewKey: VIEW_KEY },
+            "titanic": { titulo: "titanic", tmdb: "597", viewKey: VIEW_KEY },
+            "elclubdelapelea": { titulo: "elclubdelapelea", tmdb: "550", viewKey: VIEW_KEY },
+            "elpianista": { titulo: "elpianista", tmdb: "423", viewKey: VIEW_KEY },
+            "caracortada": { titulo: "caracortada", tmdb: "111", viewKey: VIEW_KEY },
+            "taxidriver": { titulo: "taxidriver", tmdb: "103", viewKey: VIEW_KEY },
+            "elgranhotelbudapest": { titulo: "elgranhotelbudapest", tmdb: "120467", viewKey: VIEW_KEY },
+            "greenbook": { titulo: "greenbook", tmdb: "490123", viewKey: VIEW_KEY },
+            "scarymovie": { titulo: "scarymovie", tmdb: "1273221", viewKey: VIEW_KEY },
+            "toystorie5": { titulo: "toystorie5", tmdb: "1084244", viewKey: VIEW_KEY },
+            "hoppers": { titulo: "hoppers", tmdb: "1327819", viewKey: VIEW_KEY },
+            "michael": { titulo: "michael", tmdb: "936075", viewKey: VIEW_KEY },
+            "eldrama": { titulo: "eldrama", tmdb: "1325734", viewKey: VIEW_KEY },
+            "GeorgeoftheJungle": { titulo: "GeorgeoftheJungle", tmdb: "10603", viewKey: VIEW_KEY },
+            "dolittle": { titulo: "dolittle", tmdb: "448119", viewKey: VIEW_KEY },
+            "eldaiblovistealamoda2": { titulo: "eldaiblovistealamoda2", tmdb: "1314481", viewKey: VIEW_KEY },
+            "unmonstruovieneaverme": { titulo: "unmonstruovieneaverme", tmdb: "258230", viewKey: VIEW_KEY },
+            "dondevivenlosmonstruos": { titulo: "dondevivenlosmonstruos", tmdb: "16523", viewKey: VIEW_KEY },
+            "starwars1": { titulo: "starwars1", tmdb: "1893", viewKey: VIEW_KEY },
+            "starwars2": { titulo: "starwars2", tmdb: "1894", viewKey: VIEW_KEY },
+            "starwars3": { titulo: "starwars3", tmdb: "1895", viewKey: VIEW_KEY },
+            "starwars4": { titulo: "starwars4", tmdb: "11", viewKey: VIEW_KEY },
+            "starwars5": { titulo: "starwars5", tmdb: "1891", viewKey: VIEW_KEY },
+            "starwars6": { titulo: "starwars6", tmdb: "1892", viewKey: VIEW_KEY },
+            "starwars7": { titulo: "starwars7", tmdb: "140607", viewKey: VIEW_KEY },
+            "starwars8": { titulo: "starwars8", tmdb: "181808", viewKey: VIEW_KEY },
+            "starwars9": { titulo: "starwars9", tmdb: "181812", viewKey: VIEW_KEY },
+            "beemovie": { titulo: "beemovie", tmdb: "5559", viewKey: VIEW_KEY },
+            "tomyjerrymagodeoz": { titulo: "tomyjerrymagodeoz", tmdb: "72972", viewKey: VIEW_KEY },
+            "tomyjerrycazadoresdetesoro": { titulo: "tomyjerrycazadoresdetesoro", tmdb: "60293", viewKey: VIEW_KEY },
+            "tomyjerrycascanueces": { titulo: "tomyjerrycascanueces", tmdb: "24696", viewKey: VIEW_KEY },
+            "tomyjerryrapidosyfuriosos": { titulo: "tomyjerryrapidosyfuriosos", tmdb: "42246", viewKey: VIEW_KEY },
+            "tomyjerryrumboamarte": { titulo: "tomyjerryrumboamarte", tmdb: "21078", viewKey: VIEW_KEY },
+            "tomyjerrywillywonka": { titulo: "tomyjerrywillywonka", tmdb: "455411", viewKey: VIEW_KEY },
+            "elprincipito": { titulo: "elprincipito", tmdb: "615665", viewKey: VIEW_KEY },
+            "buzacaperuza": { titulo: "buzacaperuza", tmdb: "10982", viewKey: VIEW_KEY },
+            "chickenlittle": { titulo: "chickenlittle", tmdb: "9982", viewKey: VIEW_KEY },
+            "aliciaatravesdelespejo": { titulo: "aliciaatravesdelespejo", tmdb: "241259", viewKey: VIEW_KEY },
+            "aliciaenelpaisdelasmaravillas": { titulo: "aliciaenelpaisdelasmaravillas", tmdb: "12155", viewKey: VIEW_KEY },
+            "eldescanso": { titulo: "El descanso", tmdb: "1581", viewKey: VIEW_KEY },
+            "lasovejasdetectives": { titulo: "lasovejasdetectives", tmdb: "1301421", viewKey: VIEW_KEY },
+            "astroboy": { titulo: "astroboy", tmdb: "16577", viewKey: VIEW_KEY },
+            "niidea": { titulo: "niidea", tmdb: "9603", viewKey: VIEW_KEY },
+            "fuerzag": { titulo: "fuerzag", tmdb: "19585", viewKey: VIEW_KEY }
         };
 
         // 1. Obtener el ID desde la URL (?id=xxxx)
@@ -49,23 +83,23 @@
         const tmdbId = params.get("id");
         
         const visor = document.getElementById("visor");
-        const tituloHtml = document.getElementById("titulo-pelicula");
 
         // 2. Buscar si el ID existe en nuestra configuración
         const opciones = Object.values(peliculasConfig).find(m => m.tmdb === tmdbId);
 
         if (opciones) {
-        // 3. Si existe, cambiamos el título y la URL del iframe
-        tituloHtml.textContent = opciones.titulo;
-        document.title = `Viendo: ${opciones.titulo}`; // Cambia la pestaña del navegador
-        
-        const url = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
-        visor.src = url;
+            // 3. Si existe, cambiamos el título de la pestaña y la URL del iframe
+            document.title = `Viendo: ${opciones.titulo}`; 
+            
+            const url = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
+            visor.src = url;
         } else {
-        // Si no existe, muestra el error
-        tituloHtml.textContent = "Película no encontrada";
-        document.body.innerHTML = `<header><a href="index.html">← Volver</a></header>
-                                    <h2 style="text-align:center; margin-top:100px;">Error: La película no está registrada en el sistema.</h2>`;
+            // Si no existe, muestra una pantalla de error limpia a pantalla completa
+            document.body.innerHTML = `
+                <a href="../pages/menu.html" style="color:white; font-size:2.5rem; position:absolute; top:35px; left:40px; text-decoration:none; font-weight:bold;">←</a>
+                <div style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#000;">
+                    <h2 style="font-family:sans-serif; font-weight:500;">Error: La película no está registrada en el sistema.</h2>
+                </div>`;
         }
     </script>
 </body>

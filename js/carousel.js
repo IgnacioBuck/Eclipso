@@ -1,19 +1,18 @@
-// Seleccionamos los elementos (asegúrate de que los nombres de las clases coincidan)
-const track = document.querySelector('.carousel-track');
-const nextBtn = document.querySelector('button.next');
-const prevBtn = document.querySelector('button.prev');
+// Seleccionamos TODOS los carruseles de la página
+const carousels = document.querySelectorAll('.netflix-carousel');
 
-nextBtn.addEventListener('click', () => {
-  // Mide el ancho real de una tarjeta (incluyendo cómo cambió por el CSS)
-  const itemWidth = document.querySelector('.item').offsetWidth;
-  
-  // Desplaza exactamente el espacio de 5 imágenes juntas
-  track.scrollLeft += itemWidth * 5; 
-});
+carousels.forEach(carousel => {
+  const track = carousel.querySelector('.carousel-track');
+  const nextBtn = carousel.querySelector('button.next');
+  const prevBtn = carousel.querySelector('button.prev');
 
-prevBtn.addEventListener('click', () => {
-  const itemWidth = document.querySelector('.item').offsetWidth;
-  
-  // Retrocede exactamente el espacio de 5 imágenes juntas
-  track.scrollLeft -= itemWidth * 5;
+  nextBtn.addEventListener('click', () => {
+    const itemWidth = carousel.querySelector('.item').offsetWidth;
+    track.scrollLeft += itemWidth * 5;
+  });
+
+  prevBtn.addEventListener('click', () => {
+    const itemWidth = carousel.querySelector('.item').offsetWidth;
+    track.scrollLeft -= itemWidth * 5;
+  });
 });

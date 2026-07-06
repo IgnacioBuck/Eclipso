@@ -3,13 +3,13 @@
   position: relative; /* Controla el contexto para los títulos */
 }
 
+
 /* Título de la categoría (Drama, Comedia, etc.) */
-.categoria h2 {
+section h2 {
   margin-left: 20px;
-  margin-bottom: 15px;
+
   font-family: sans-serif;
 }
-
 .netflix-carousel {
   position: relative;
   display: flex;
