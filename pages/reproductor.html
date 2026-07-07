@@ -21,7 +21,7 @@
                 frameborder="0" 
                 allow="autoplay; encrypted-media" 
                 allowfullscreen>
-            </iframe>
+             Welles</iframe>
         </div>
     </main>
 
@@ -73,9 +73,22 @@
             "aliciaenelpaisdelasmaravillas": { titulo: "aliciaenelpaisdelasmaravillas", tmdb: "12155", viewKey: VIEW_KEY },
             "eldescanso": { titulo: "El descanso", tmdb: "1581", viewKey: VIEW_KEY },
             "lasovejasdetectives": { titulo: "lasovejasdetectives", tmdb: "1301421", viewKey: VIEW_KEY },
-            "astroboy": { titulo: "astroboy", tmdb: "16577", viewKey: VIEW_KEY },
             "niidea": { titulo: "niidea", tmdb: "9603", viewKey: VIEW_KEY },
-            "fuerzag": { titulo: "fuerzag", tmdb: "19585", viewKey: VIEW_KEY }
+            "fuerzag": { titulo: "fuerzag", tmdb: "19585", viewKey: VIEW_KEY },
+            
+            // NUEVA PELÍCULA DESDE YOUTUBE:
+            // Le inventamos un ID de tmdb (ej: "arthur1") para que tu menú lo pueda llamar sin problemas
+            "arthurminimoys": { 
+                titulo: "Arthur y los Minimoys", 
+                tmdb: "arthur1", 
+                urlDirecta: "https://www.youtube.com/embed/4FW21w2kW70" 
+            },
+
+            "astroboy": { 
+            titulo: "Astro Boy", 
+            tmdb: "astro", 
+            urlDirecta: "https://www.youtube.com/embed/La9V9lIctW4" 
+            },
         };
 
         // 1. Obtener el ID desde la URL (?id=xxxx)
@@ -88,17 +101,24 @@
         const opciones = Object.values(peliculasConfig).find(m => m.tmdb === tmdbId);
 
         if (opciones) {
-            // 3. Si existe, cambiamos el título de la pestaña y la URL del iframe
+            // 3. Si existe, cambiamos el título de la pestaña
             document.title = `Viendo: ${opciones.titulo}`; 
             
-            const url = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
-            visor.src = url;
+            // 4. LÓGICA DE DETECCIÓN: ¿Es un link directo o va por Vimeus?
+            if (opciones.urlDirecta) {
+                // Si tiene urlDirecta (como el video de YouTube), la usamos directamente
+                visor.src = opciones.urlDirecta;
+            } else {
+                // Si no, arma la URL tradicional de Vimeus
+                const url = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
+                visor.src = url;
+            }
         } else {
-            // Si no existe, muestra una pantalla de error limpia a pantalla completa
+            // Si no existe, muestra la pantalla de error usando las fuentes de tu app
             document.body.innerHTML = `
-                <a href="../pages/menu.html" style="color:white; font-size:2.5rem; position:absolute; top:35px; left:40px; text-decoration:none; font-weight:bold;">←</a>
-                <div style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#000;">
-                    <h2 style="font-family:sans-serif; font-weight:500;">Error: La película no está registrada en el sistema.</h2>
+                <a href="../pages/menu.html" style="color:white; font-size:2.5rem; position:absolute; top:35px; left:40px; text-decoration:none; font-weight:bold; font-family:'Saira', sans-serif;">←</a>
+                <div style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#000; color:white; font-family:'Saira', sans-serif;">
+                    <h2 style="font-weight:500;">Error: La película no está registrada en el sistema.</h2>
                 </div>`;
         }
     </script>
