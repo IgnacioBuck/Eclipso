@@ -1,110 +1,77 @@
-// DICCIONARIO DE SERIES Y CANALES LOCALES PARA TV EN VIVO
+// DICCIONARIO DE SERIES Y CANALES EN VIVO
 const seriesTV = [
     {
         num: "01",
         id: "theoffice",
         nombre: "Canal 01: The Office 24/7",
-        desc: "Maratón ininterrumpido de The Office.",
+        desc: "Maratón ininterrumpido y aleatorio de The Office.",
         imdb: "tt0386676",
         viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY",
         player: "vimeus_serie",
-        duracionMin: 22, // Duración de cada capítulo en minutos
-        temporadas: [6, 22, 23, 14, 26, 26, 27, 24, 23] // Cantidad de capítulos por temporada
+        duracionMin: 22,
+        // Lista con la cantidad de episodios de cada temporada (Temporada 1 a 9)
+        temporadas: [6, 22, 23, 14, 26, 26, 27, 24, 23] 
     },
     {
         num: "02",
-        id: "tn_noticias",
-        nombre: "Canal 02: TN (Todo Noticias) en Vivo",
-        desc: "Señal de noticias Todo Noticias las 24 horas.",
-        player: "youtube_live",
-        youtubeUrl: "https://www.youtube.com/embed/live_stream?channel=UC42220pI3A94_U-T2o4E_lA&autoplay=1"
+        id: "c5n_noticias",
+        nombre: "Canal 02: C5N Noticias en Vivo",
+        desc: "Señal de noticias 24 horas en directo.",
+        player: "hls_stream",
+        streamUrl: "https://canales-tvs.github.io/C5N/index.m3u8"
     },
     {
         num: "03",
-        id: "c5n_noticias",
-        nombre: "Canal 03: C5N Noticias en Vivo",
-        desc: "Señal de noticias 24 horas en directo.",
-        player: "youtube_live",
-        youtubeUrl: "https://www.youtube.com/embed/live_stream?channel=UC42220pI3A94_U-T2o4E_lA&autoplay=1"
+        id: "tn_noticias",
+        nombre: "Canal 03: TN (Todo Noticias) en Vivo",
+        desc: "Señal de noticias Todo Noticias las 24 horas.",
+        player: "hls_stream",
+        streamUrl: "https://canales-tvs.github.io/TN/index.m3u8"
     },
     {
         num: "04",
         id: "friends",
         nombre: "Canal 04: Friends 24/7",
-        desc: "Transmisión continua de Friends.",
+        desc: "Transmisión aleatoria de Friends.",
         imdb: "tt0108778",
         player: "moviesapi",
         duracionMin: 22,
         temporadas: [24, 24, 25, 24, 24, 25, 24, 24, 24, 18]
-    },
-    {
-        num: "05",
-        id: "strangerthings",
-        nombre: "Canal 05: Stranger Things",
-        desc: "Emisión continua de Hawkins.",
-        imdb: "tt4574334",
-        viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY",
-        player: "vimeus_serie",
-        duracionMin: 50,
-        temporadas: [8, 9, 8, 9, 8]
     }
 ];
 
 let canalActualIndex = 0;
 let temporizadorSiguienteCap = null;
-
-// Guardar en memoria el capitulo y temporada actual que se esta reproduciendo
 let capActualEstado = { temporada: 1, episodio: 1 };
+let hlsInstance = null;
 
 // FUNCION DE ENCENDIDO INICIAL
 function encenderTV() {
     const overlay = document.getElementById("tvOverlay");
-    if (overlay) {
-        overlay.style.display = "none";
-    }
+    if (overlay) overlay.style.display = "none";
     sintonizarCanal(0);
 }
 
-// 1. CALCULAR CAPÍTULO INICIAL SEGÚN LA HORA ACTUAL DEL DÍA
-function calcularCapituloInicial(canal) {
-    const ahora = new Date();
-    const minutosDelDia = (ahora.getHours() * 60) + ahora.getMinutes();
-    const bloqueActual = Math.floor(minutosDelDia / canal.duracionMin);
+// 1. GENERAR UN EPISODIO COMPLETAMENTE ALEATORIO
+function obtenerCapituloAleatorio(canal) {
+    // 1. Seleccionar una temporada al azar (1 a N)
+    const totalTemporadas = canal.temporadas.length;
+    const tempRandomIndex = Math.floor(Math.random() * totalTemporadas);
+    const temporadaElegida = tempRandomIndex + 1;
 
-    let listaEpisodios = [];
-    canal.temporadas.forEach((totalCaps, indexTemp) => {
-        for (let ep = 1; ep <= totalCaps; ep++) {
-            listaEpisodios.push({ temporada: indexTemp + 1, episodio: ep });
-        }
-    });
+    // 2. Seleccionar un episodio al azar dentro de esa temporada
+    const totalEpisodiosEnTemp = canal.temporadas[tempRandomIndex];
+    const episodioElegido = Math.floor(Math.random() * totalEpisodiosEnTemp) + 1;
 
-    const indiceCapitulo = bloqueActual % listaEpisodios.length;
-    return listaEpisodios[indiceCapitulo];
+    return {
+        temporada: temporadaElegida,
+        episodio: episodioElegido
+    };
 }
 
-// 2. AVANZAR AL SIGUIENTE CAPÍTULO DE FORMA SECUENCIAL (Temporada 1 Ep 1 -> Ep 2...)
-function obtenerSiguienteCapitulo(canal, tempActual, epActual) {
-    const totalCapsEnTemp = canal.temporadas[tempActual - 1];
-
-    // Si aún quedan episodios en esta temporada, pasa al siguiente episodio
-    if (epActual < totalCapsEnTemp) {
-        return { temporada: tempActual, episodio: epActual + 1 };
-    } 
-    // Si terminó la temporada, pasa al capítulo 1 de la siguiente temporada
-    else if (tempActual < canal.temporadas.length) {
-        return { temporada: tempActual + 1, episodio: 1 };
-    } 
-    // Si terminó toda la serie, vuelve a empezar desde la Temporada 1 Capítulo 1
-    else {
-        return { temporada: 1, episodio: 1 };
-    }
-}
-
-// 3. GENERAR URL DEL IFRAME
+// 2. GENERAR URL DEL IFRAME SEGÚN EL SERVIDOR DE LA SERIE
 function obtenerUrlVideo(canal, temp, ep) {
-    if (canal.player === "youtube_live") {
-        return canal.youtubeUrl;
-    } else if (canal.player === "vimeus_serie") {
+    if (canal.player === "vimeus_serie") {
         return `https://vimeus.com/e/serie?imdb=${canal.imdb}&se=${temp}&ep=${ep}&view_key=${canal.viewKey}&autoplay=1`;
     } else if (canal.player === "moviesapi") {
         return `https://moviesapi.to/tv/${canal.imdb}-${temp}-${ep}?autoplay=1`;
@@ -112,7 +79,7 @@ function obtenerUrlVideo(canal, temp, ep) {
     return "";
 }
 
-// 4. DIBUJAR LA LISTA DE CANALES EN EL SIDEBAR
+// 3. CARGAR LISTA DE CANALES EN EL SIDEBAR
 function cargarListaCanales() {
     const lista = document.getElementById("channelList");
     if (!lista) return;
@@ -134,53 +101,68 @@ function cargarListaCanales() {
     });
 }
 
-// 5. SINTONIZAR CANAL Y PROGRAMAR EL CAMBIO AUTOMÁTICO
-function sintonizarCanal(index, esSiguienteAutomatico = false) {
+// 4. SINTONIZAR CANAL Y PROGRAMAR EL PRÓXIMO EPISODIO ALEATORIO
+function sintonizarCanal(index) {
     canalActualIndex = index;
     const canal = seriesTV[index];
 
-    let videoUrl = "";
-    let textoDetalle = canal.desc;
-
-    // Si es un canal de serie (The Office, Friends, etc.)
-    if (canal.player !== "youtube_live") {
-        
-        // Si el usuario acaba de cambiar de canal, calcula qué capítulo le toca por la hora
-        if (!esSiguienteAutomatico) {
-            capActualEstado = calcularCapituloInicial(canal);
-        } else {
-            // Si el capítulo anterior terminó solo, calcula cuál es el SIGUIENTE capítulo
-            capActualEstado = obtenerSiguienteCapitulo(canal, capActualEstado.temporada, capActualEstado.episodio);
-        }
-
-        videoUrl = obtenerUrlVideo(canal, capActualEstado.temporada, capActualEstado.episodio);
-        textoDetalle = `${canal.desc} — Viendo: Temp ${capActualEstado.temporada} | Cap ${capActualEstado.episodio}`;
-
-        // Cancelar temporizadores anteriores
-        if (temporizadorSiguienteCap) clearTimeout(temporizadorSiguienteCap);
-
-        // Programar la carga del SIGUIENTE capítulo cuando pase el tiempo del actual (en ms)
-        const msParaSiguiente = canal.duracionMin * 60 * 1000;
-        
-        temporizadorSiguienteCap = setTimeout(() => {
-            // Llama a la función avisando que es un pase automático (esSiguienteAutomatico = true)
-            sintonizarCanal(canalActualIndex, true);
-        }, msParaSiguiente);
-
-    } else {
-        // Si es un canal de noticias de YouTube
-        videoUrl = obtenerUrlVideo(canal);
-        if (temporizadorSiguienteCap) clearTimeout(temporizadorSiguienteCap);
-    }
-
-    // Actualizar elementos HTML
-    const player = document.getElementById("tvPlayer");
+    const iframePlayer = document.getElementById("tvPlayer");
+    const hlsPlayer = document.getElementById("hlsPlayer");
     const titulo = document.getElementById("currentChannelTitle");
     const desc = document.getElementById("currentChannelDesc");
 
-    if (player) player.src = videoUrl;
-    if (titulo) titulo.textContent = canal.nombre;
-    if (desc) desc.textContent = textoDetalle;
+    // Limpiar reproducciones y temporizadores anteriores
+    if (hlsInstance) {
+        hlsInstance.destroy();
+        hlsInstance = null;
+    }
+    if (temporizadorSiguienteCap) clearTimeout(temporizadorSiguienteCap);
+
+    // --- CASO CANALES DE TRANSMISIÓN DIRECTA (.m3u8 / Noticias) ---
+    if (canal.player === "hls_stream") {
+        if (iframePlayer) {
+            iframePlayer.style.display = "none";
+            iframePlayer.src = "";
+        }
+        if (hlsPlayer) {
+            hlsPlayer.style.display = "block";
+            if (Hls.isSupported()) {
+                hlsInstance = new Hls();
+                hlsInstance.loadSource(canal.streamUrl);
+                hlsInstance.attachMedia(hlsPlayer);
+                hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => hlsPlayer.play());
+            } else if (hlsPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                hlsPlayer.src = canal.streamUrl;
+                hlsPlayer.play();
+            }
+        }
+
+        if (titulo) titulo.textContent = canal.nombre;
+        if (desc) desc.textContent = canal.desc;
+    } 
+    // --- CASO SERIES EN VIVO (The Office, Friends, etc.) ---
+    else {
+        if (hlsPlayer) {
+            hlsPlayer.style.display = "none";
+            hlsPlayer.pause();
+        }
+        if (iframePlayer) iframePlayer.style.display = "block";
+
+        // Obtener un capítulo COMPLETAMENTE ALEATORIO cada vez que sintoniza o termina el anterior
+        capActualEstado = obtenerCapituloAleatorio(canal);
+
+        const videoUrl = obtenerUrlVideo(canal, capActualEstado.temporada, capActualEstado.episodio);
+        if (iframePlayer) iframePlayer.src = videoUrl;
+
+        if (titulo) titulo.textContent = canal.nombre;
+        if (desc) desc.textContent = `${canal.desc} — Viendo: Temp ${capActualEstado.temporada} | Cap ${capActualEstado.episodio}`;
+
+        // Programar el cambio automático aleatorio al terminar los minutos asignados (ej. 22 min)
+        const msParaSiguiente = canal.duracionMin * 60 * 1000;
+        temporizadorSiguienteCap = setTimeout(() => {
+            sintonizarCanal(canalActualIndex); // Vuelve a ejecutar la función y elige un nuevo capítulo aleatorio
+        }, msParaSiguiente);
+    }
 
     cargarListaCanales();
 }

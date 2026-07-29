@@ -8,12 +8,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- Librería HLS.js para reproducir enlaces M3U8 (Transmisiones TV) -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
     <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="../css/styleTv.css">
 </head>
 <body>
 
-    <!-- PANTALLA DE ENCENDIDO (OBLIGATORIA PARA HABILITAR AUTOPLAY SIN BLOQUEOS) -->
+    <!-- PANTALLA DE ENCENDIDO -->
     <div id="tvOverlay" class="tv-overlay">
         <div class="overlay-content">
             <h2>📺 TV en Vivo</h2>
@@ -28,10 +31,14 @@
             <a href="../pages/menu.html" class="btn-back">←</a>
             
             <div class="iframe-wrapper">
+                <!-- REPRODUCTOR NATIVO DE VIDEO (Para M3U8) -->
+                <video id="hlsPlayer" controls autoplay muted style="width:100%; height:100%; display:none;"></video>
+
+                <!-- IFRAME DE RESPALDO (Para tus series en Vimeus/MoviesAPI) -->
                 <iframe 
                     id="tvPlayer" 
                     src="" 
-                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope" 
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture" 
                     allowfullscreen>
                 </iframe>
             </div>
