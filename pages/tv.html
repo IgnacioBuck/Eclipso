@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV en Vivo - Plataforma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="../css/styleTv.css">
+</head>
+<body>
+
+    <!-- PANTALLA DE ENCENDIDO (OBLIGATORIA PARA HABILITAR AUTOPLAY SIN BLOQUEOS) -->
+    <div id="tvOverlay" class="tv-overlay">
+        <div class="overlay-content">
+            <h2>📺 TV en Vivo</h2>
+            <p>Haz clic para iniciar la transmisión en vivo e ininterrumpida</p>
+            <button id="btnPowerOn" onclick="encenderTV()">▶ ENCENDER TV</button>
+        </div>
+    </div>
+
+    <div class="tv-container">
+        <!-- ÁREA DEL REPRODUCTOR -->
+        <main class="main-player">
+            <a href="../pages/menu.html" class="btn-back">←</a>
+            
+            <div class="iframe-wrapper">
+                <iframe 
+                    id="tvPlayer" 
+                    src="" 
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="channel-info">
+                <h2 id="currentChannelTitle">Cargando canal...</h2>
+                <p id="currentChannelDesc">Obteniendo programación en vivo...</p>
+            </div>
+        </main>
+
+        <!-- BARRA LATERAL DE CANALES -->
+        <aside class="channels-sidebar">
+            <div class="sidebar-header">📺 Canales en Vivo</div>
+            <ul class="channel-list" id="channelList"></ul>
+        </aside>
+    </div>
+
+    <!-- Enlace al archivo JavaScript -->
+    <script src="../js/tv.js"></script>
+</body>
+</html>
