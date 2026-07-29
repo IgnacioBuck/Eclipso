@@ -16,11 +16,11 @@
 </head>
 <body>
 
-    <!-- PANTALLA DE ENCENDIDO -->
+    <!-- PANTALLA DE ENCENDIDO (Sintoniza con un clic para autorizar el Autoplay) -->
     <div id="tvOverlay" class="tv-overlay">
         <div class="overlay-content">
             <h2>📺 TV en Vivo</h2>
-            <p>Haz clic para iniciar la transmisión en vivo e ininterrumpida</p>
+            <p>Haz clic para iniciar la transmisión continua</p>
             <button id="btnPowerOn" onclick="encenderTV()">▶ ENCENDER TV</button>
         </div>
     </div>
@@ -31,10 +31,10 @@
             <a href="../pages/menu.html" class="btn-back">←</a>
             
             <div class="iframe-wrapper">
-                <!-- REPRODUCTOR NATIVO DE VIDEO (Para M3U8) -->
+                <!-- REPRODUCTOR NATIVO DE VIDEO (Para M3U8 / Streams directos) -->
                 <video id="hlsPlayer" controls autoplay muted style="width:100%; height:100%; display:none;"></video>
 
-                <!-- IFRAME DE RESPALDO (Para tus series en Vimeus/MoviesAPI) -->
+                <!-- IFRAME DE RESPALDO (Para tus series en Vimeus/MoviesAPI/Embeds) -->
                 <iframe 
                     id="tvPlayer" 
                     src="" 
