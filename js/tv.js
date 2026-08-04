@@ -1,4 +1,4 @@
-const PROXY_SERVER = 'https://eclipso.onrender.com/proxy?url=';
+const PROXY_SERVER = 'the-goodplace.netlify.app/.netlify/functions/proxy?url=';
 let hlsInstance = null;
 
 function reproducirCanal(urlOriginalCanal) {
