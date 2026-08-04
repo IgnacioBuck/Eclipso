@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV en Vivo - Argentina</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1e293b;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: #38bdf8;
+        }
+
+        /* Contenedor principal Grid */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .main-container {
+                grid-template-columns: 3fr 1fr; /* 3 partes para el player, 1 para la lista */
+            }
+        }
+
+        /* Sección del Reproductor */
+        .player-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            aspect-ratio: 16 / 9;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .channel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 5px;
+            color: #e2e8f0;
+        }
+
+        /* Lista de Canales */
+        .channels-sidebar {
+            background-color: #1e293b;
+            border-radius: 12px;
+            padding: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #334155;
+        }
+
+        .channels-sidebar h2 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .channel-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-canal {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background-color: #334155;
+            color: #f8fafc;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-align: left;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-canal:hover {
+            background-color: #0284c7;
+            transform: translateX(3px);
+        }
+
+        .btn-canal:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📺 Televisión Argentina en Vivo</h1>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- Contenedor del Video -->
+        <main class="player-section">
+            <div class="video-wrapper">
+                <video id="tv-player" controls autoplay muted playsinline></video>
+            </div>
+            <div class="channel-title" id="current-channel-name">Selecciona un canal para comenzar</div>
+        </main>
+
+        <!-- Lista Lateral de Canales -->
+        <aside class="channels-sidebar">
+            <h2>Canales Disponibles</h2>
+            <div class="channel-list">
+                
+                <!-- Reemplaza las URLs por los enlaces .m3u8 reales del repositorio -->
+                <button class="btn-canal" onclick="cambiarCanal('https://5f700d5b2c46f.streamlock.net:443/canal22/canal22/playlist.m3u8?PlaylistM3UCL')">
+                    🔴 Telefe
+                </button>
+                
+                <button class="btn-canal" onclick="cambiarCanal('https://streamtv12.ddns.net:5443/LiveApp/streams/193945633734205616732920.m3u8?token=null&PlaylistM3UCL')">
+                    🔴 El Trece
+                </button>
+                
+                <button class="btn-canal" onclick="cambiarCanal('http://www.coninfo.net:1935/tvcinco/live1/playlist.m3u8?PlaylistM3UCL')">
+                    🔴 TN Noticias
+                </button>
+
+                <button class="btn-canal" onclick="cambiarCanal('http://streaming.arcast.com.ar:1935/canal5picotruncado/canal5picotruncado/playlist.m3u8?PlaylistM3UCL', 'C5N')">
+                    🔴 C5
+                </button>
+                <button class="btn-canal" onclick="cambiarCanal('http://181.209.91.106:2222/Live/120e4c580311c6685df90ec4dca2c0b1/americatv.playlist.m3u8', 'C5N')">
+                    🔴 n24t
+                </button>
+                <button class="btn-canal" onclick="cambiarCanal('http://45.226.28.9:8085/Live/18e292ea93b66c65c76707f07c489d61/local-c5n.playlist.m3u8', 'C5N')">
+                    🔴 C5N
+                </button>
+                <button class="btn-canal" onclick="cambiarCanal('http://45.226.28.9:8085/Live/18e292ea93b66c65c76707f07c489d61/local-cinecanal.playlist.m3u8', 'C5N')">
+                    🔴 CINECANAL
+                </button>
+                <button class="btn-canal" onclick="cambiarCanal('http://45.226.28.9:8085/Live/18e292ea93b66c65c76707f07c489d61/local-cronicatv.playlist.m3u8', 'C5N')">
+                    🔴 CRONICA
+                </button>
+
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 1. Cargar HLS.js directamente desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <!-- 2. Tu archivo de script de la carpeta js -->
+    <!-- Ajusta la ruta (ej: "js/tv.js" o "pages/js/tv.js") según donde esté tu archivo HTML -->
+    <script src="../js/tv.js"></script>
+
+    <!-- Función auxiliar para actualizar el nombre del canal en pantalla -->
+    <script>
+        function cambiarCanal(url, nombre) {
+            document.getElementById('current-channel-name').innerText = "Viendo: " + nombre;
+            // Ejecuta la función principal definida en tu archivo tv.js
+            reproducirCanal(url); 
+        }
+    </script>
+</body>
+</html>
