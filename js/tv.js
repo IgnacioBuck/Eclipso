@@ -1,4 +1,4 @@
-const PROXY_SERVER = 'http://localhost:3000/proxy?url=';
+const PROXY_SERVER = 'https://eclipso.onrender.com/proxy?url=';
 let hlsInstance = null;
 
 function reproducirCanal(urlOriginalCanal) {
