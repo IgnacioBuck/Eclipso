@@ -19,9 +19,8 @@
                 id="visor" 
                 src="" 
                 frameborder="0" 
-                allow="autoplay; encrypted-media" 
+                allow="autoplay; encrypted-media; fullscreen" 
                 allowfullscreen>
-                Welles
             </iframe>
         </div>
     </main>
@@ -29,6 +28,7 @@
     <script>
         const VIEW_KEY = "nnFJ2dTIgKadm_U15hWEPBnovP91r9win5lt1TQrB4Q";
         
+        // 💡 Tip: Puedes agregar "servidor: 'vidapi'" o "servidor: 'vimeus'" en la película que quieras.
         const peliculasConfig = {
             "contandoamisex": { titulo: "contandoamisex", tmdb: "63492", viewKey: VIEW_KEY },
             "klaus": { titulo: "klaus", tmdb: "508965", viewKey: VIEW_KEY },
@@ -78,46 +78,82 @@
             "niidea": { titulo: "niidea", tmdb: "9603", viewKey: VIEW_KEY },
             "fuerzag": { titulo: "fuerzag", tmdb: "19585", viewKey: VIEW_KEY },
             "arthurminimoys": { titulo: "arthurminimoys", tmdb: "9992", viewKey: VIEW_KEY },
-            "hppiedrafilosofal": { titulo: "hppiedrafilosofal", tmdb: "671", viewKey: VIEW_KEY },
-            "hpcamarasecreta": { titulo: "hpcamarasecreta", tmdb: "672", viewKey: VIEW_KEY },
-            "hpazcaban": { titulo: "hpazcaban", tmdb: "673", viewKey: VIEW_KEY },
-            "hpcalizdefuego": { titulo: "hpcalizdefuego", tmdb: "674", viewKey: VIEW_KEY },
-            "hpordendelfenix": { titulo: "hpordendelfenix", tmdb: "675", viewKey: VIEW_KEY },
-            "hpmisteriodelprincipe": { titulo: "hpmisteriodelprincipe", tmdb: "767", viewKey: VIEW_KEY },
-            "hpreliquia": { titulo: "hpreliquia", tmdb: "12444", viewKey: VIEW_KEY },
-            "hpreliquia2": { titulo: "hpreliquia2", tmdb: "12445", viewKey: VIEW_KEY },
+            "hppiedrafilosofal": { titulo: "hppiedrafilosofal", tmdb: "671", viewKey: VIEW_KEY, servidor: "vidapi" },
+            "hpcamarasecreta": { titulo: "hpcamarasecreta", tmdb: "672", viewKey: VIEW_KEY, servidor: "vidapi" },
+            "hpazcaban": { titulo: "hpazcaban", tmdb: "673", viewKey: VIEW_KEY, servidor: "vidapi" },
+            "hpcalizdefuego": { titulo: "hpcalizdefuego", tmdb: "674", viewKey: VIEW_KEY, servidor: "vidapi" },
+            "hpordendelfenix": { titulo: "hpordendelfenix", tmdb: "675", viewKey: VIEW_KEY, servidor: "vidapi" },
+            "hpmisteriodelprincipe": { titulo: "hpmisteriodelprincipe", tmdb: "767", viewKey: VIEW_KEY, servidor: "vidapi" },
+            "hpreliquia": { titulo: "hpreliquia", tmdb: "12444", viewKey: VIEW_KEY, servidor: "vidapi" },
+            "hpreliquia2": { titulo: "hpreliquia2", tmdb: "12445", viewKey: VIEW_KEY, servidor: "vidapi" },
         };
 
-        // 1. Obtener el ID desde la URL (?id=xxxx)
+        // 1. Obtener el ID desde la URL
         const params = new URLSearchParams(window.location.search);
         const tmdbId = params.get("id");
         
         const visor = document.getElementById("visor");
 
-        // 2. Buscar si el ID existe en nuestra configuración
+        // 2. Buscar si existe en la configuración
         const opciones = Object.values(peliculasConfig).find(m => m.tmdb === tmdbId);
 
         if (opciones) {
-            // 3. Si existe, cambiamos el título de la pestaña
             document.title = `Viendo: ${opciones.titulo}`; 
             
-            // 4. LÓGICA DE DETECCIÓN: ¿Es un link directo o va por Vimeus?
+            // 3. LÓGICA MULTI-REPRODUCTOR
             if (opciones.urlDirecta) {
-                // Si tiene urlDirecta (como el video de YouTube), la usamos directamente
+                // Opción A: Link directo / personalizado
                 visor.src = opciones.urlDirecta;
+            } else if (opciones.servidor === "vidapi") {
+                // Opción B: Reproductor VidApi
+                visor.src = `https://vidapi.ru/embed/movie/${opciones.tmdb}`;
             } else {
-                // Si no, arma la URL tradicional de Vimeus
-                const url = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
-                visor.src = url;
+                // Opción C: Vimeus (Por defecto si no se especifica 'servidor')
+                visor.src = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
             }
         } else {
-            // Si no existe, muestra la pantalla de error usando las fuentes de tu app
+            // Pantalla de error
             document.body.innerHTML = `
                 <a href="../pages/menu.html" style="color:white; font-size:2.5rem; position:absolute; top:35px; left:40px; text-decoration:none; font-weight:bold; font-family:'Saira', sans-serif;">←</a>
                 <div style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#000; color:white; font-family:'Saira', sans-serif;">
                     <h2 style="font-weight:500;">Error: La película no está registrada en el sistema.</h2>
                 </div>`;
         }
+        window.addEventListener('DOMContentLoaded', () => {
+            // Obtener el ID de la película o serie desde la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const idPelicula = urlParams.get('id');
+
+            // Si no hay ID en la URL, no hace nada
+            if (!idPelicula) return;
+
+            // Buscar si existe alguna imagen/poster en la página para guardar como portada
+            const portadaEl = document.querySelector('.portada-pelicula, #poster, img');
+            const imgSrc = portadaEl ? portadaEl.getAttribute('src') : `../img/poster_${idPelicula}.jpg`;
+
+            // Crear el objeto del contenido que se está viendo
+            const nuevoVisto = {
+                id: idPelicula,
+                link: window.location.pathname + window.location.search, // Conserva la ruta completa
+                imgSrc: imgSrc,
+                altText: document.title || `Película ${idPelicula}`
+            };
+
+            // Obtener la lista actual de localStorage
+            let listaVistos = JSON.parse(localStorage.getItem('continuarViendo')) || [];
+
+            // Eliminar si ya existía para colocarlo de primero en la lista (evita duplicados)
+            listaVistos = listaVistos.filter(item => item.id !== nuevoVisto.id);
+
+            // Agregar al principio del arreglo
+            listaVistos.unshift(nuevoVisto);
+
+            // Guardar máximo 15 elementos
+            if (listaVistos.length > 15) listaVistos.pop();
+
+            // Guardar en el almacenamiento del navegador
+            localStorage.setItem('continuarViendo', JSON.stringify(listaVistos));
+        });
     </script>
 </body>
 </html>

@@ -59,3 +59,33 @@ button{
 
 }
 
+/* Ocultar la sección "Continuar viendo" por defecto hasta que JS cargue elementos */
+/* Forzar que las tarjetas de 'Continuar viendo' midan exactamente lo mismo que el resto */
+#sec-continuar-viendo .item {
+    flex: 0 0 auto;
+    width: 200px; /* Ajusta este valor al ancho exacto que tengan tus items en Drama/Comedia */
+    height: 300px; /* Ajusta este valor a la altura exacta de tus posters */
+    overflow: hidden;
+    border-radius: 8px; /* O el border-radius que uses */
+}
+
+/* Forzar que la imagen llene el contenedor sin deformarse ni sobresalir */
+#sec-continuar-viendo .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta proporcionalmente sin deformar */
+    display: block;
+}
+.badge-episodio {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}

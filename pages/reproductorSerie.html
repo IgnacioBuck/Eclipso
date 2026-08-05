@@ -59,8 +59,8 @@
     let episodio = 1;
 
     const params = new URLSearchParams(window.location.search);
-    const imdbId = params.get("id");       
-    const serieId = params.get("serie");   
+    const imdbId = params.get("id");      
+    const serieId = params.get("serie");  
 
     let opciones = null;
     if (imdbId) {
@@ -102,6 +102,9 @@
         cargarPlayer(opciones, temporada, episodio);
         marcarBotonActivo(episodio);
       }
+
+      // Guardar en "Continuar viendo" en la carga inicial de la página
+      guardarContinuarViendo();
     }
 
     function generarBotonesCapitulos(maxCapitulos, opciones) {
@@ -204,6 +207,8 @@
       } catch (e) {
         console.warn("No se pudo guardar el progreso", e);
       }
+      // Actualizar también la lista global para el carrusel del menú
+      guardarContinuarViendo();
     }
 
     function marcarBotonActivo(num) {
@@ -214,6 +219,63 @@
       const boton = contenedor.querySelector(`.btn-cap[data-cap='${num}']`);
       if (boton) boton.classList.add("visto");
     }
-  </script>
+
+    // 🌟 FUNCIONES DE INTEGRACIÓN CON "CONTINUAR VIENDO" 🌟
+
+    // Obtener la clave legible de la serie (ej. "got", "friends", "strangerthings")
+    function obtenerClaveSerie() {
+      if (serieId) return serieId;
+      const claveEncontrada = Object.keys(seriesConfig).find(key => seriesConfig[key].imdb === imdbId);
+      return claveEncontrada || imdbId || "serie";
+    }
+
+    // Construir la ruta de la portada según el nombre de la serie
+    function obtenerImagenSerie() {
+    const clave = obtenerClaveSerie();
+    const nombreLimpio = clave.replace(/\s+/g, '');
+
+    // Si ya existe en la lista de localStorage cargada previamente desde el menú, conservamos esa imagen
+    let listaVistos = JSON.parse(localStorage.getItem('continuarViendo')) || [];
+    let existente = listaVistos.find(item => item.id === (imdbId || serieId || clave));
+
+    if (existente && existente.imgSrc) {
+        return existente.imgSrc;
+    }
+
+    // Si se abrió directamente por URL, busca la portada local en ../img/
+    return `../img/${nombreLimpio}.jpg`;
+  }
+
+    // Guardar en la clave principal "continuarViendo" que lee el menú
+    function guardarContinuarViendo() {
+      const clave = obtenerClaveSerie();
+      const idUnico = imdbId || serieId || clave;
+      
+      // Construir link de retorno con los parámetros originales
+      let paramUrl = imdbId ? `id=${imdbId}` : `serie=${serieId}`;
+      const linkPagina = `reproductorSerie.html?${paramUrl}`;
+
+      const nuevoVisto = {
+        id: idUnico,
+        link: linkPagina,
+        imgSrc: obtenerImagenSerie(),
+        altText: `${clave.toUpperCase()}`,
+        etiqueta: `T${temporada}:E${episodio}` // Insignia T1:E2 que se muestra en la portada
+      };
+
+      let listaVistos = JSON.parse(localStorage.getItem('continuarViendo')) || [];
+      
+      // Eliminar coincidencia previa para reordenarla al inicio
+      listaVistos = listaVistos.filter(item => item.id !== nuevoVisto.id);
+      
+      // Añadir al principio
+      listaVistos.unshift(nuevoVisto);
+
+      // Mantener máximo 15 elementos en el historial
+      if (listaVistos.length > 15) listaVistos.pop();
+
+      localStorage.setItem('continuarViendo', JSON.stringify(listaVistos));
+    }
+</script>
 </body>
 </html>

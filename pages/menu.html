@@ -94,6 +94,16 @@
             </div>
         </div>
         
+        <section class="continuar-viendo" id="sec-continuar-viendo">
+        <h2>Continuar viendo</h2>
+        <div class="netflix-carousel">
+            <button class="prev">&#10094;</button>
+            <div class="carousel-track" id="track-continuar-viendo">
+                <!-- Los elementos se insertarán dinámicamente con JavaScript -->
+            </div>
+            <button class="next">&#10095;</button>
+        </div>
+    </section>
 
         <section class="drama">
             <h2>Drama</h2>
@@ -576,6 +586,69 @@
 
         }, 150); 
         });
+        
+        function renderizarContinuarViendo() {
+        const datos = localStorage.getItem('continuarViendo');
+        const listaVistos = datos ? JSON.parse(datos) : [];
+
+        const seccion = document.getElementById('sec-continuar-viendo');
+        const track = document.getElementById('track-continuar-viendo');
+
+        if (!seccion || !track) return;
+
+        // Si hay elementos guardados en localStorage
+        if (listaVistos.length > 0) {
+            track.innerHTML = ''; // Limpiar el carrusel
+
+            listaVistos.forEach(item => {
+                const divItem = document.createElement('div');
+                divItem.className = 'item'; // Misma clase que tus otros items de género
+
+                // Si tiene etiqueta (es una serie), creamos la insignia visual
+                const badgeSerie = item.etiqueta 
+                    ? `<span class="badge-episodio">${item.etiqueta}</span>` 
+                    : '';
+
+                divItem.innerHTML = `
+                    <a href="${item.link}" style="position: relative; display: block;">
+                        <img src="${item.imgSrc}" alt="${item.altText}">
+                        ${badgeSerie}
+                    </a>
+                `;
+                track.appendChild(divItem);
+            });
+
+            // Mostrar la sección en el menú
+            seccion.style.display = 'block';
+
+            // Re-vincular botones del carrusel
+            conectarBotonesCarrusel(seccion);
+        } else {
+            // Si no hay reproducciones, mantenemos la sección oculta
+            seccion.style.display = 'none';
+        }
+    }
+
+    // Función auxiliar para activar los botones prev y next del carrusel generado
+    function conectarBotonesCarrusel(seccion) {
+        const btnPrev = seccion.querySelector('.prev');
+        const btnNext = seccion.querySelector('.next');
+        const track = seccion.querySelector('.carousel-track');
+
+        if (btnPrev && btnNext && track) {
+            btnPrev.onclick = () => {
+                track.scrollBy({ left: -300, behavior: 'smooth' });
+            };
+            btnNext.onclick = () => {
+                track.scrollBy({ left: 300, behavior: 'smooth' });
+            };
+        }
+    }
+
+    
+    // Ejecutar la renderización cuando cargue el DOM
+    document.addEventListener('DOMContentLoaded', renderizarContinuarViendo);
+
     </script>
     
 
