@@ -1,281 +1,283 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>reproductor-Series</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/reproductor.css">
-  <link rel="stylesheet" href="../css/styleReproductorSerie.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reproductor-Series</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/reproductor.css">
+    <link rel="stylesheet" href="../css/styleReproductorSerie.css">
 </head>
 <body>
 
-  <div class="container">
-    <div class="header-nav">
-      <a href="../pages/menu.html">← Volver al inicio</a>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../pages/menu.html">← Volver al inicio</a>
+        </div>
+
+        <div class="player-container">
+            <iframe id="visor" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+
+        <div class="controls-container">
+            <div class="selector-wrapper">
+                <label for="selectTemp">Temporada:</label>
+                <div id="selectorTemporada"></div>
+            </div>
+
+            <div id="botonesCapitulos" class="chapters-grid"></div>
+            
+            <div class="next-container">
+                <button id="btnSiguienteCap" class="btn-next">Siguiente capítulo →</button>
+            </div>
+        </div>
     </div>
 
-    <div class="player-container">
-      <iframe id="visor" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
+    <script>
+        const VIEW_KEY = "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY";
 
-    <div class="controls-container">
-      
-      <div class="selector-wrapper">
-        <label for="selectTemp">Temporada:</label>
-        <div id="selectorTemporada"></div>
-      </div>
+        const seriesConfig = {
+            "got": { titulo: "got", imdb: "tt0944947", tmdb: "1399", viewKey: "8Myg_CbKpM2XN72ibzAdILkfQfTIouApg_LC67XAV8Y", temporadas: [10, 10, 10, 10, 10, 10, 7, 6] },
+            "severance": { titulo: "severance", imdb: "tt11280740", tmdb: "95557", viewKey: "8Myg_CbKpM2XN72ibzAdILkfQfTIouApg_LC67XAV8Y", temporadas: [9, 2] },
+            "tedlasso": { titulo: "tedlasso", imdb: "tt10986410", tmdb: "97546", viewKey: VIEW_KEY, temporadas: [10, 12, 12] },
+            "theboys": { titulo: "theboys", imdb: "tt1190634", tmdb: "76479", viewKey: VIEW_KEY, temporadas: [8, 8, 8, 8, 8] },
+            "laoficina": { titulo: "laoficina", imdb: "tt0386676", tmdb: "2316", viewKey: VIEW_KEY, temporadas: [6, 22, 23, 14, 26, 26, 27, 24, 23] },
+            "lost": { titulo: "lost", imdb: "tt0411008", tmdb: "4607", viewKey: VIEW_KEY, temporadas: [25, 24, 23, 14, 17, 18] },
+            "grimm": { titulo: "grimm", imdb: "tt1830617", tmdb: "39351", viewKey: VIEW_KEY, temporadas: [22, 22, 22, 22, 22, 13] },
+            "strangerthings": { titulo: "strangerthings", imdb: "tt4574334", tmdb: "66732", viewKey: VIEW_KEY, temporadas: [8, 9, 8, 9, 8] },
+            "elcuentodelacriada": { titulo: "elcuentodelacriada", imdb: "tt5834204", tmdb: "69478", viewKey: VIEW_KEY, temporadas: [10, 13, 13, 10, 10, 10] },
+            "elcaballerodelos7": { titulo: "elcaballerodelos7", imdb: "tt27497448", tmdb: "224372", viewKey: VIEW_KEY, temporadas: [6] },
+            "supernatural": { titulo: "supernatural", imdb: "tt0460681", tmdb: "1622", viewKey: VIEW_KEY, temporadas: [22, 22, 16, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 20, 20] },
+            "gilmoregirl": { titulo: "gilmoregirl", imdb: "tt0238784", tmdb: "4586", viewKey: VIEW_KEY, temporadas: [21, 22, 22, 22, 22, 22, 22], servidor: "vidapi" },
+            "sexandthecity": { titulo: "sexandthecity", imdb: "tt0159206", tmdb: "105", viewKey: VIEW_KEY, temporadas: [12, 18, 18, 18, 8, 20], servidor: "vidapi" },
+            "howimetyourmother": { titulo: "howimetyourmother", imdb: "tt0460649", tmdb: "1100", viewKey: VIEW_KEY, temporadas: [22, 22, 20, 24, 24, 24, 24, 24, 24], servidor: "vidapi" },
+            "friends": { titulo: "friends", imdb: "tt0108778", tmdb: "1668", temporadas: [24, 24, 25, 24, 24, 25, 24, 24, 24, 18], servidor: "vidapi" }
+        };
 
-      <div id="botonesCapitulos" class="chapters-grid"></div>
-      
-      <div class="next-container">
-        <button id="btnSiguienteCap" class="btn-next">Siguiente capítulo →</button>
-      </div>
+        let temporada = 1;
+        let episodio = 1;
 
-    </div>
-  </div>
+        // 1. Obtener ID/Serie desde la URL
+        const params = new URLSearchParams(window.location.search);
+        const idParam = params.get("id");      
+        const serieId = params.get("serie");  
 
-  <script>
-    // Tu configuración original de series
-    const seriesConfig = {
-      "got": { imdb: "tt0944947", viewKey: "8Myg_CbKpM2XN72ibzAdILkfQfTIouApg_LC67XAV8Y", temporadas: [10, 10, 10, 10, 10, 10, 7, 6], player: "vimeus_serie" },
-      "severance": { imdb: "tt11280740", viewKey: "8Myg_CbKpM2XN72ibzAdILkfQfTIouApg_LC67XAV8Y", temporadas: [9, 2], player: "vimeus_serie" },
-      "howamet":{ imdb: "tt0460649", viewKey: "8Myg_CbKpM2XN72ibzAdILkfQfTIouApg_LC67XAV8Y", temporadas: [22, 22, 20, 24, 24, 24, 24, 24, 24], player: "moviesapi" },
-      "friends":{ imdb: "tt0108778", temporadas: [24, 24, 25, 24, 24, 25, 24, 24, 24, 18], player: "moviesapi" },
-      "tedlasso":{ imdb: "tt10986410", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [10, 12, 12], player: "vimeus_serie" },
-      "theboys":{ imdb: "tt1190634", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [8, 8, 8, 8, 8], player:"vimeus_serie" },
-      "laoficina":{imdb: "tt0386676", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [6, 22, 23, 14, 26, 26, 27, 24, 23], player:"vimeus_serie"},
-      "lost":{imdb: "tt0411008", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [25, 24, 23, 14, 17, 18], player:"vimeus_serie"},
-      "grimm":{imdb: "tt1830617", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [22, 22, 22, 22, 22, 13], player:"vimeus_serie"},
-      "strangerthings":{imdb: "tt4574334", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [8, 9, 8, 9, 8], player:"vimeus_serie"},
-      "elcuento de la criada":{imdb: "tt5834204", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [10, 13, 13, 10, 10, 10], player:"vimeus_serie"},
-      "elcaballero de los 7":{imdb: "tt27497448", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [6], player:"vimeus_serie"},
-      "supernatural":{imdb: "tt0460681", viewKey: "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY", temporadas: [22, 22, 16, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 20, 20], player:"vimeus_serie"},
-    };
-
-    let temporada = 1;
-    let episodio = 1;
-
-    const params = new URLSearchParams(window.location.search);
-    const imdbId = params.get("id");      
-    const serieId = params.get("serie");  
-
-    let opciones = null;
-    if (imdbId) {
-      opciones = Object.values(seriesConfig).find(s => s.imdb === imdbId);
-    } else if (serieId) {
-      opciones = seriesConfig[serieId];
-    }
-
-    const serieKey = (serieId || imdbId) ? `progreso_${serieId || imdbId}` : null;
-
-    if (serieKey) {
-      try {
-        const guardado = JSON.parse(localStorage.getItem(serieKey) || "{}");
-        if (guardado && guardado.episodio) episodio = parseInt(guardado.episodio) || 1;
-        if (guardado && guardado.temporada) temporada = parseInt(guardado.temporada) || 1;
-      } catch (e) {
-        episodio = 1;
-        temporada = 1;
-      }
-    }
-
-    if (opciones) {
-      generarSelectorTemporada(opciones);
-      document.getElementById("btnSiguienteCap").onclick = () => siguienteCapitulo(opciones);
-
-      if (opciones.episodios) {
-        generarBotonesCapitulos(opciones.episodios.length, opciones);
-        if (episodio < 1 || episodio > opciones.episodios.length) episodio = 1;
-        document.getElementById("visor").src = opciones.episodios[episodio - 1];
-        marcarBotonActivo(episodio);
-      } else {
-        const capsDeEstaTemporada = opciones.temporadas[temporada - 1] || opciones.temporadas[0];
-        generarBotonesCapitulos(capsDeEstaTemporada, opciones);
-        
-        if (episodio < 1 || episodio > capsDeEstaTemporada) episodio = 1;
-        
-        const selectTemp = document.querySelector("#selectorTemporada select");
-        if (selectTemp) selectTemp.value = temporada;
-        cargarPlayer(opciones, temporada, episodio);
-        marcarBotonActivo(episodio);
-      }
-
-      // Guardar en "Continuar viendo" en la carga inicial de la página
-      guardarContinuarViendo();
-    }
-
-    function generarBotonesCapitulos(maxCapitulos, opciones) {
-      const contenedor = document.getElementById("botonesCapitulos");
-      contenedor.innerHTML = "";
-      for (let i = 1; i <= maxCapitulos; i++) {
-        const btn = document.createElement("button");
-        btn.textContent = `Cap. ${i}`;
-        btn.className = "btn-cap"; 
-        btn.dataset.cap = i;
-        btn.onclick = () => cambiarCapitulo(i, opciones);
-        contenedor.appendChild(btn);
-      }
-      marcarBotonActivo(episodio);
-    }
-
-    function generarSelectorTemporada(opciones) {
-      const contenedor = document.getElementById("selectorTemporada");
-      contenedor.innerHTML = "";
-
-      const totalTemporadas = opciones.temporadas ? opciones.temporadas.length : 1;
-      if (totalTemporadas <= 1) return;
-
-      const select = document.createElement("select");
-      select.className = "custom-select"; 
-      select.id = "selectTemp";
-      for (let t = 1; t <= totalTemporadas; t++) {
-        const option = document.createElement("option");
-        option.value = t;
-        option.textContent = `Temporada ${t}`;
-        select.appendChild(option);
-      }
-
-      select.value = temporada;
-
-      select.onchange = () => {
-        temporada = parseInt(select.value);
-        episodio = 1;
-        const capsDeEstaTemporada = opciones.temporadas[temporada - 1];
-        generarBotonesCapitulos(capsDeEstaTemporada, opciones);
-        cambiarCapitulo(episodio, opciones);
-      };
-
-      contenedor.appendChild(select);
-    }
-
-    function cargarPlayer(opciones, temporada, episodio) {
-      let src = "";
-      if (opciones.player === "vimeus_serie") {
-        src = `https://vimeus.com/e/serie?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${opciones.viewKey}`;
-      } else if (opciones.player === "vimeus_anime"){
-        src = `https://vimeus.com/e/anime?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${opciones.viewKey}`;
-      } else if (opciones.player === "moviesapi") {
-        src = `https://moviesapi.to/tv/${opciones.imdb}-${temporada}-${episodio}`;
-      } else if (opciones.player === "supervideo") {
-        src = opciones.episodios[episodio - 1];
-      }
-      document.getElementById("visor").src = src;
-    }
-
-    function cambiarCapitulo(num, opciones) {
-      episodio = num;
-      if (opciones.episodios) {
-        document.getElementById("visor").src = opciones.episodios[episodio - 1];
-      } else {
-        cargarPlayer(opciones, temporada, episodio);
-      }
-      guardarProgreso();
-      marcarBotonActivo(episodio);
-    }
-
-    function siguienteCapitulo(opciones) {
-      episodio++;
-      if (opciones.episodios) {
-        if (episodio > opciones.episodios.length) episodio = 1;
-        document.getElementById("visor").src = opciones.episodios[episodio - 1];
-      } else {
-        const maxCapsActuales = opciones.temporadas[temporada - 1];
-        if (episodio > maxCapsActuales) {
-          temporada++;
-          episodio = 1;
-          if (temporada > opciones.temporadas.length) temporada = 1;
-
-          const selectTemp = document.querySelector("#selectorTemporada select");
-          if (selectTemp) selectTemp.value = temporada;
-          
-          generarBotonesCapitulos(opciones.temporadas[temporada - 1], opciones);
+        // 2. Buscar si existe en la configuración
+        let opciones = null;
+        if (idParam) {
+            opciones = Object.values(seriesConfig).find(s => s.imdb === idParam || s.tmdb === idParam);
+        } else if (serieId) {
+            opciones = seriesConfig[serieId];
         }
-        cargarPlayer(opciones, temporada, episodio);
-      }
-      guardarProgreso();
-      marcarBotonActivo(episodio);
-    }
 
-    function guardarProgreso() {
-      if (!serieKey) return;
-      const data = { episodio: episodio, temporada: temporada, timestamp: Date.now() };
-      try {
-        localStorage.setItem(serieKey, JSON.stringify(data));
-      } catch (e) {
-        console.warn("No se pudo guardar el progreso", e);
-      }
-      // Actualizar también la lista global para el carrusel del menú
-      guardarContinuarViendo();
-    }
+        const serieKey = (serieId || idParam) ? `progreso_${serieId || idParam}` : null;
 
-    function marcarBotonActivo(num) {
-      const contenedor = document.getElementById("botonesCapitulos");
-      if (!contenedor) return;
-      const botones = contenedor.querySelectorAll(".btn-cap");
-      botones.forEach(b => b.classList.remove("visto"));
-      const boton = contenedor.querySelector(`.btn-cap[data-cap='${num}']`);
-      if (boton) boton.classList.add("visto");
-    }
+        if (serieKey) {
+            try {
+                const guardado = JSON.parse(localStorage.getItem(serieKey) || "{}");
+                if (guardado && guardado.episodio) episodio = parseInt(guardado.episodio) || 1;
+                if (guardado && guardado.temporada) temporada = parseInt(guardado.temporada) || 1;
+            } catch (e) {
+                episodio = 1;
+                temporada = 1;
+            }
+        }
 
-    // 🌟 FUNCIONES DE INTEGRACIÓN CON "CONTINUAR VIENDO" 🌟
+        if (opciones) {
+            document.title = `Viendo: ${opciones.titulo || "Serie"}`;
+            
+            generarSelectorTemporada(opciones);
+            document.getElementById("btnSiguienteCap").onclick = () => siguienteCapitulo(opciones);
 
-    // Obtener la clave legible de la serie (ej. "got", "friends", "strangerthings")
-    function obtenerClaveSerie() {
-      if (serieId) return serieId;
-      const claveEncontrada = Object.keys(seriesConfig).find(key => seriesConfig[key].imdb === imdbId);
-      return claveEncontrada || imdbId || "serie";
-    }
+            if (opciones.episodios) {
+                generarBotonesCapitulos(opciones.episodios.length, opciones);
+                if (episodio < 1 || episodio > opciones.episodios.length) episodio = 1;
+                document.getElementById("visor").src = opciones.episodios[episodio - 1];
+                marcarBotonActivo(episodio);
+            } else {
+                const capsDeEstaTemporada = opciones.temporadas[temporada - 1] || opciones.temporadas[0];
+                generarBotonesCapitulos(capsDeEstaTemporada, opciones);
+                
+                if (episodio < 1 || episodio > capsDeEstaTemporada) episodio = 1;
+                
+                const selectTemp = document.querySelector("#selectorTemporada select");
+                if (selectTemp) selectTemp.value = temporada;
+                cargarPlayer(opciones, temporada, episodio);
+                marcarBotonActivo(episodio);
+            }
 
-    // Construir la ruta de la portada según el nombre de la serie
-    function obtenerImagenSerie() {
-    const clave = obtenerClaveSerie();
-    const nombreLimpio = clave.replace(/\s+/g, '');
+            guardarContinuarViendo();
+        } else {
+            document.body.innerHTML = `
+                <a href="../pages/menu.html" style="color:white; font-size:2.5rem; position:absolute; top:35px; left:40px; text-decoration:none; font-weight:bold; font-family:'Saira', sans-serif;">←</a>
+                <div style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#000; color:white; font-family:'Saira', sans-serif;">
+                    <h2 style="font-weight:500;">Error: La serie no está registrada en el sistema.</h2>
+                </div>`;
+        }
 
-    // Si ya existe en la lista de localStorage cargada previamente desde el menú, conservamos esa imagen
-    let listaVistos = JSON.parse(localStorage.getItem('continuarViendo')) || [];
-    let existente = listaVistos.find(item => item.id === (imdbId || serieId || clave));
+        function generarBotonesCapitulos(maxCapitulos, opciones) {
+            const contenedor = document.getElementById("botonesCapitulos");
+            contenedor.innerHTML = "";
+            for (let i = 1; i <= maxCapitulos; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = `Cap. ${i}`;
+                btn.className = "btn-cap"; 
+                btn.dataset.cap = i;
+                btn.onclick = () => cambiarCapitulo(i, opciones);
+                contenedor.appendChild(btn);
+            }
+            marcarBotonActivo(episodio);
+        }
 
-    if (existente && existente.imgSrc) {
-        return existente.imgSrc;
-    }
+        function generarSelectorTemporada(opciones) {
+            const contenedor = document.getElementById("selectorTemporada");
+            contenedor.innerHTML = "";
 
-    // Si se abrió directamente por URL, busca la portada local en ../img/
-    return `../img/${nombreLimpio}.jpg`;
-  }
+            const totalTemporadas = opciones.temporadas ? opciones.temporadas.length : 1;
+            if (totalTemporadas <= 1) return;
 
-    // Guardar en la clave principal "continuarViendo" que lee el menú
-    function guardarContinuarViendo() {
-      const clave = obtenerClaveSerie();
-      const idUnico = imdbId || serieId || clave;
-      
-      // Construir link de retorno con los parámetros originales
-      let paramUrl = imdbId ? `id=${imdbId}` : `serie=${serieId}`;
-      const linkPagina = `reproductorSerie.html?${paramUrl}`;
+            const select = document.createElement("select");
+            select.className = "custom-select"; 
+            select.id = "selectTemp";
+            for (let t = 1; t <= totalTemporadas; t++) {
+                const option = document.createElement("option");
+                option.value = t;
+                option.textContent = `Temporada ${t}`;
+                select.appendChild(option);
+            }
 
-      const nuevoVisto = {
-        id: idUnico,
-        link: linkPagina,
-        imgSrc: obtenerImagenSerie(),
-        altText: `${clave.toUpperCase()}`,
-        etiqueta: `T${temporada}:E${episodio}` // Insignia T1:E2 que se muestra en la portada
-      };
+            select.value = temporada;
 
-      let listaVistos = JSON.parse(localStorage.getItem('continuarViendo')) || [];
-      
-      // Eliminar coincidencia previa para reordenarla al inicio
-      listaVistos = listaVistos.filter(item => item.id !== nuevoVisto.id);
-      
-      // Añadir al principio
-      listaVistos.unshift(nuevoVisto);
+            select.onchange = () => {
+                temporada = parseInt(select.value);
+                episodio = 1;
+                const capsDeEstaTemporada = opciones.temporadas[temporada - 1];
+                generarBotonesCapitulos(capsDeEstaTemporada, opciones);
+                cambiarCapitulo(episodio, opciones);
+            };
 
-      // Mantener máximo 15 elementos en el historial
-      if (listaVistos.length > 15) listaVistos.pop();
+            contenedor.appendChild(select);
+        }
 
-      localStorage.setItem('continuarViendo', JSON.stringify(listaVistos));
-    }
-</script>
+        function cargarPlayer(opciones, temporada, episodio) {
+            const visor = document.getElementById("visor");
+            const vKey = opciones.viewKey || VIEW_KEY;
+
+            if (opciones.urlDirecta) {
+                visor.src = opciones.urlDirecta;
+            } else if (opciones.servidor === "vidapi") {
+                const idSerie = opciones.tmdb || opciones.imdb;
+                visor.src = `https://vaplayer.ru/embed/tv/${idSerie}/${temporada}/${episodio}`;
+            } else if (opciones.servidor === "moviesapi") {
+                visor.src = `https://moviesapi.to/tv/${opciones.imdb}-${temporada}-${episodio}`;
+            } else if (opciones.servidor === "vimeus_anime") {
+                visor.src = `https://vimeus.com/e/anime?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${vKey}`;
+            } else {
+                visor.src = `https://vimeus.com/e/serie?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${vKey}`;
+            }
+        }
+
+        function cambiarCapitulo(num, opciones) {
+            episodio = num;
+            if (opciones.episodios) {
+                document.getElementById("visor").src = opciones.episodios[episodio - 1];
+            } else {
+                cargarPlayer(opciones, temporada, episodio);
+            }
+            guardarProgreso();
+            marcarBotonActivo(episodio);
+        }
+
+        function siguienteCapitulo(opciones) {
+            episodio++;
+            if (opciones.episodios) {
+                if (episodio > opciones.episodios.length) episodio = 1;
+                document.getElementById("visor").src = opciones.episodios[episodio - 1];
+            } else {
+                const maxCapsActuales = opciones.temporadas[temporada - 1];
+                if (episodio > maxCapsActuales) {
+                    temporada++;
+                    episodio = 1;
+                    if (temporada > opciones.temporadas.length) temporada = 1;
+
+                    const selectTemp = document.querySelector("#selectorTemporada select");
+                    if (selectTemp) selectTemp.value = temporada;
+                    
+                    generarBotonesCapitulos(opciones.temporadas[temporada - 1], opciones);
+                }
+                cargarPlayer(opciones, temporada, episodio);
+            }
+            guardarProgreso();
+            marcarBotonActivo(episodio);
+        }
+
+        function guardarProgreso() {
+            if (!serieKey) return;
+            const data = { episodio: episodio, temporada: temporada, timestamp: Date.now() };
+            try {
+                localStorage.setItem(serieKey, JSON.stringify(data));
+            } catch (e) {
+                console.warn("No se pudo guardar el progreso", e);
+            }
+            guardarContinuarViendo();
+        }
+
+        function marcarBotonActivo(num) {
+            const contenedor = document.getElementById("botonesCapitulos");
+            if (!contenedor) return;
+            const botones = contenedor.querySelectorAll(".btn-cap");
+            botones.forEach(b => b.classList.remove("visto"));
+            const boton = contenedor.querySelector(`.btn-cap[data-cap='${num}']`);
+            if (boton) boton.classList.add("visto");
+        }
+
+        function obtenerClaveSerie() {
+            if (serieId) return serieId;
+            const claveEncontrada = Object.keys(seriesConfig).find(key => 
+                seriesConfig[key].imdb === idParam || seriesConfig[key].tmdb === idParam
+            );
+            return claveEncontrada || idParam || "serie";
+        }
+
+        function obtenerImagenSerie() {
+            const clave = obtenerClaveSerie();
+            const nombreLimpio = clave.replace(/\s+/g, '');
+
+            let listaVistos = JSON.parse(localStorage.getItem('continuarViendo')) || [];
+            let existente = listaVistos.find(item => item.id === (idParam || serieId || clave));
+
+            if (existente && existente.imgSrc) {
+                return existente.imgSrc;
+            }
+
+            return `../img/${nombreLimpio}.jpg`;
+        }
+
+        function guardarContinuarViendo() {
+            const clave = obtenerClaveSerie();
+            const idUnico = idParam || serieId || clave;
+            
+            let paramUrl = idParam ? `id=${idParam}` : `serie=${serieId}`;
+            const linkPagina = `reproductorSerie.html?${paramUrl}`;
+
+            const nuevoVisto = {
+                id: idUnico,
+                link: linkPagina,
+                imgSrc: obtenerImagenSerie(),
+                altText: `${clave.toUpperCase()}`,
+                etiqueta: `T${temporada}:E${episodio}`
+            };
+
+            let listaVistos = JSON.parse(localStorage.getItem('continuarViendo')) || [];
+            listaVistos = listaVistos.filter(item => item.id !== nuevoVisto.id);
+            listaVistos.unshift(nuevoVisto);
+
+            if (listaVistos.length > 15) listaVistos.pop();
+
+            localStorage.setItem('continuarViendo', JSON.stringify(listaVistos));
+        }
+    </script>
 </body>
 </html>
