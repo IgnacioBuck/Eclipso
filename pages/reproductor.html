@@ -26,7 +26,7 @@
     </main>
 
     <script>
-        const VIEW_KEY = "nnFJ2dTIgKadm_U15hWEPBnovP91r9win5lt1TQrB4Q";
+        const VIEW_KEY = "2mDlQMaZhnxSyF7hBePUf156IcpsSUNz47yhUnDO-1k";
         
         // 💡 Tip: Puedes agregar "servidor: 'vidapi'" o "servidor: 'vimeus'" en la película que quieras.
         const peliculasConfig = {
@@ -110,7 +110,7 @@
                 visor.src = `https://vidapi.ru/embed/movie/${opciones.tmdb}`;
             } else {
                 // Opción C: Vimeus (Por defecto si no se especifica 'servidor')
-                visor.src = `https://vimeus.com/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
+                visor.src = `https://vimeus.net/e/movie?tmdb=${opciones.tmdb}&view_key=${opciones.viewKey}`;
             }
         } else {
             // Pantalla de error
