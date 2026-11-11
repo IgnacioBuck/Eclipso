@@ -39,7 +39,7 @@
         const VIEW_KEY = "E4YZ5l7meDrqFf0qh7HHF0m57qeUQkDYzkgvlfBtzcY";
 
         const seriesConfig = {
-            "got": { titulo: "got", imdb: "tt0944947", tmdb: "1399", viewKey: "8Myg_CbKpM2XN72ibzAdILkfQfTIouApg_LC67XAV8Y", temporadas: [10, 10, 10, 10, 10, 10, 7, 6] },
+            "got": { titulo: "got", imdb: "tt0944947", tmdb: "1399", viewKey: "2mDlQMaZhnxSyF7hBePUf156IcpsSUNz47yhUnDO-1k", temporadas: [10, 10, 10, 10, 10, 10, 7, 6] },
             "severance": { titulo: "severance", imdb: "tt11280740", tmdb: "95557", viewKey: "8Myg_CbKpM2XN72ibzAdILkfQfTIouApg_LC67XAV8Y", temporadas: [9, 2] },
             "tedlasso": { titulo: "tedlasso", imdb: "tt10986410", tmdb: "97546", viewKey: VIEW_KEY, temporadas: [10, 12, 12] },
             "theboys": { titulo: "theboys", imdb: "tt1190634", tmdb: "76479", viewKey: VIEW_KEY, temporadas: [8, 8, 8, 8, 8] },
@@ -54,6 +54,8 @@
             "sexandthecity": { titulo: "sexandthecity", imdb: "tt0159206", tmdb: "105", viewKey: VIEW_KEY, temporadas: [12, 18, 18, 18, 8, 20], servidor: "vidapi" },
             "howimetyourmother": { titulo: "howimetyourmother", imdb: "tt0460649", tmdb: "1100", viewKey: VIEW_KEY, temporadas: [22, 22, 20, 24, 24, 24, 24, 24, 24], servidor: "vidapi" },
             "friends": { titulo: "friends", imdb: "tt0108778", tmdb: "1668", temporadas: [24, 24, 25, 24, 24, 25, 24, 24, 24, 18], servidor: "vidapi" },
+            "thebigbang": { titulo: "thebigbang", imdb: "tt0898266", tmdb: "1418", temporadas: [17, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24], servidor: "vidapi" },
+            "youngsheldon": { titulo: "youngsheldon", imdb: "tt6226232", tmdb: "71728", temporadas: [22, 22, 21, 18, 22, 22, 14], servidor: "vidapi" },
             "boysoverflower": { titulo: "boysoverflower", imdb: "tt1370334", tmdb: "16420", temporadas: [25], servidor: "vidapi" }
         };
 
@@ -174,9 +176,9 @@
             } else if (opciones.servidor === "moviesapi") {
                 visor.src = `https://moviesapi.to/tv/${opciones.imdb}-${temporada}-${episodio}`;
             } else if (opciones.servidor === "vimeus_anime") {
-                visor.src = `https://vimeus.com/e/anime?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${vKey}`;
+                visor.src = `https://vimeus.net/e/anime?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${vKey}`;
             } else {
-                visor.src = `https://vimeus.com/e/serie?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${vKey}`;
+                visor.src = `https://vimeus.net/e/serie?imdb=${opciones.imdb}&se=${temporada}&ep=${episodio}&view_key=${vKey}`;
             }
         }
 
